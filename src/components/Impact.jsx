@@ -78,6 +78,7 @@ const Impact = () => {
 
         <div className="mt-20 grid md:grid-cols-2 gap-8 items-center border-t border-gray-100 pt-16">
           <motion.div 
+            id="ethics"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

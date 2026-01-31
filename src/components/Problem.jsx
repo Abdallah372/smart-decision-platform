@@ -6,7 +6,7 @@ const Problem = () => {
     <section id="problem" className="bg-gray-50 py-12 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-24">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-4 sm:mb-6 tracking-tight italic leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-4 sm:mb-6 tracking-tight  leading-tight">
             سؤال البحث: متى تتحول الوفرة المعلوماتية إلى "<Term term="العبء الإداري" explanation="كثرة البيانات والتقارير التي تستهلك وقت المسؤول بدل أن تساعده" />"؟
           </h2>
           <p className="text-base sm:text-l md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-2">
