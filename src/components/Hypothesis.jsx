@@ -5,7 +5,6 @@ const Hypothesis = () => {
   return (
     <section id="hypothesis" className="bg-slate-50 py-20 text-right font-sans">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <span className="text-teal-600 font-bold text-sm tracking-widest uppercase bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
             Design of Experiment
@@ -16,9 +15,7 @@ const Hypothesis = () => {
           <p className="text-slate-600">الإطار النظري الذي تقوم عليه المنصة</p>
         </div>
 
-        {/* Hypothesis Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 ">
-          {/* Main Hypothesis Statement */}
           <div className="p-8 border-b border-slate-100 bg-gradient-to-l from-white to-slate-50">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <span className="text-teal-500">H1</span>
@@ -31,20 +28,19 @@ const Hypothesis = () => {
                 explanation="بيانات تُحدّث بشكل فوري وتلقائي من المصدر دون تدخل بشري"
                 className="text-teal-700 font-bold border-b-2 border-teal-100 hover:border-teal-500 transition-colors cursor-help"
               />{" "}
-              مع خوارزميات دعم القرار يقلل من{" "}
+              مع خوارزميات دعم القرار يهدف (وفقاً للنماذج البحثية) إلى تقليل{" "}
               <Term
                 term="التحيز المعرفي البشري"
                 explanation="الميل غير الواعي لاتخاذ قرارات بناءً على الخبرة الشخصية أو العاطفة بدلاً من الحقائق المجردة"
                 className="text-red-600 font-bold border-b-2 border-red-100 hover:border-red-500 transition-colors cursor-help"
               />{" "}
-              في إدارة الموارد العامة بنسبة لا تقل عن 40% مقارنة بالطرق
+              في إدارة الموارد العامة بنسبة متوقعة تصل لـ 40%* مقارنة بالطرق
               التقليدية."
             </p>
+            <p className="text-[10px] text-slate-400 mt-4">* قيمة افتراضية لأغراض المحاكاة بناءً على دراسات الحوكمة الرقمية.</p>
           </div>
 
-          {/* Variables & Validation */}
           <div className="grid md:grid-cols-2 divide-x divide-x-reverse divide-slate-100">
-            {/* Variables */}
             <div className="p-8">
               <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wide">
                 متغيرات الدراسة (Variables)
@@ -81,7 +77,6 @@ const Hypothesis = () => {
               </ul>
             </div>
 
-            {/* Why Testable? */}
             <div className="p-8 bg-slate-50/50">
               <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wide flex items-center gap-2">
                 <Term

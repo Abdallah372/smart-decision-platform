@@ -1,190 +1,154 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const BeforeAfterSlider = () => {
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const containerRef = useRef(null);
-  const isDragging = useRef(false);
+/**
+ * ScenarioSwitcher - Replaces the old slider with a high-end "Reality Toggle"
+ * Focuses on clarity, impact, and mobile responsiveness.
+ */
+const ScenarioSwitcher = () => {
+  const [mode, setMode] = useState('smart'); // 'trad' or 'smart'
 
-  // Motion values for smooth physics
-  const x = useSpring(50, { stiffness: 300, damping: 30 }); // 0 to 100
-
-  // RTL Logic: 0 (Left) -> 100 (Right)
-  // We want Traditional (Before) on the RIGHT.
-  // We want Smart (After) on the LEFT.
-  // The 'Handle' moves from 0 to 100.
-  // Area to the RIGHT of handle = Traditional.
-  // Area to the LEFT of handle = Smart.
-
-  // Clip Path for Top Layer (Traditional/Right Side)
-  // We need to clip the LEFT side of the Traditional layer based on slider position.
-  // inset(top right bottom left) -> inset(0 0 0 val%)
-  const clipPathVal = useTransform(x, (val) => `inset(0 0 0 ${val}%)`);
-  
-  // Handle Position: simply left: val%
-  const handlePosition = useTransform(x, (val) => `${val}%`);
-
-  // Parallax: 
-  // Smart (Left): As x goes 0->100 (Revealing more), text stays or enters? 
-  // Text should move slightly to oppose the wipe for depth.
-  const textX_Smart = useTransform(x, [0, 100], [50, 0]); 
-  const textX_Traditional = useTransform(x, [0, 100], [0, -50]);
-
-  // Handle Drag Interactivity
-  const handleMove = (clientX) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const percent = Math.min(Math.max(0, clientX - rect.left), rect.width) / rect.width * 100;
-    x.set(percent);
-    setSliderPosition(percent);
+  const scenarios = {
+    trad: {
+        id: 'trad',
+        title: 'النظام التقليدي',
+        subtitle: 'رد فعل (Reactive)',
+        desc: 'يعتمد على البلاغات اليدوية بعد وقوع الأزمة، مما يؤدي لتضاعف الخسائر.',
+        color: 'from-rose-50 to-white',
+        accent: 'rose-600',
+        metrics: [
+            { label: 'زمن الكشف', value: '4 ساعات', status: 'critical' },
+            { label: 'نسبة الخسارة', value: '85%', status: 'critical' },
+            { label: 'التكلفة الإضافية', value: 'عالية جداً', status: 'critical' }
+        ],
+        icon: (
+            <svg className="w-12 h-12 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        )
+    },
+    smart: {
+        id: 'smart',
+        title: 'نظام القرار الذكي',
+        subtitle: 'فعل استباقي (Proactive)',
+        desc: 'يرصد المؤشرات الأولية قبل وقوع الأزمة، ويقوم بأتمتة الحلول فورياً.',
+        color: 'from-teal-900 to-slate-900',
+        accent: 'teal-400',
+        metrics: [
+            { label: 'زمن الكشف', value: '0.2 ثانية', status: 'perfect' },
+            { label: 'نسبة الخسارة', value: '0%', status: 'perfect' },
+            { label: 'التكلفة الإضافية', value: 'صفرية', status: 'perfect' }
+        ],
+        icon: (
+            <svg className="w-12 h-12 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        )
+    }
   };
 
-  const handleMouseDown = (e) => {
-    isDragging.current = true;
-    handleMove(e.clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    handleMove(e.touches[0].clientX);
-  };
-
-  useEffect(() => {
-    const handleGlobalMouseUp = () => { isDragging.current = false; };
-    const handleGlobalMouseMove = (e) => {
-      if (isDragging.current) handleMove(e.clientX);
-    };
-
-    window.addEventListener('mouseup', handleGlobalMouseUp);
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    return () => {
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-    };
-  }, []);
+  const current = scenarios[mode];
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full h-[600px] rounded-[2.5rem] overflow-hidden cursor-ew-resize select-none shadow-2xl border-4 border-slate-100 group bg-slate-900"
-      onMouseDown={handleMouseDown}
-      onTouchMove={handleTouchMove}
-    >
+    <div className="w-full max-w-5xl mx-auto px-4">
       
-      {/* ------------------------------------------------------ */}
-      {/* LAYER 1: BOTTOM (SMART SYSTEM - LEFT SIDE)            */}
-      {/* Visible by default, covers the whole area but gets    */}
-      {/* covered by Layer 2 on the right.                      */}
-      {/* ------------------------------------------------------ */}
-      <div className="absolute inset-0 bg-slate-900 flex items-center justify-center overflow-hidden z-10 text-right">
-        
-        {/* Background */}
-        <div className="absolute inset-0 opacity-30">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.1)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-transparent to-teal-900/20"></div>
+      {/* 1. Professional Toggle Button */}
+      <div className="flex justify-center mb-8">
+        <div className="bg-slate-100 p-1 rounded-xl sm:rounded-2xl flex gap-1 shadow-inner border border-slate-200">
+            <button 
+                onClick={() => setMode('smart')}
+                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 ${mode === 'smart' ? 'bg-white text-teal-700 shadow-md transform scale-[1.02]' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${mode === 'smart' ? 'bg-teal-500 animate-pulse' : 'bg-slate-300'}`}></div>
+                القرار الذكي
+            </button>
+            <button 
+                onClick={() => setMode('trad')}
+                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 ${mode === 'trad' ? 'bg-white text-rose-700 shadow-md transform scale-[1.02]' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+                <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${mode === 'trad' ? 'bg-rose-500 animate-pulse' : 'bg-slate-300'}`}></div>
+                الوضع التقليدي
+            </button>
         </div>
-
-        {/* Content */}
-        <motion.div 
-          style={{ x: textX_Smart }}
-          className="relative z-10 text-center px-4"
-        >
-          <div className="inline-flex p-5 rounded-full bg-teal-500/10 border border-teal-500/30 mb-8 relative shadow-[0_0_30px_rgba(20,184,166,0.3)]">
-            <div className="absolute inset-0 rounded-full bg-teal-400 blur-xl opacity-20 animate-pulse"></div>
-            <svg className="w-16 h-16 text-teal-400 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          
-          <h3 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-teal-200 mb-4 drop-shadow-[0_0_15px_rgba(20,184,166,0.5)]">
-            القرار الذكي
-          </h3>
-          <p className="text-teal-200/80 text-xl font-medium tracking-wide mb-10">
-            تنبؤ دقيق. استجابة فورية. صفر خسائر.
-          </p>
-
-          <div className="flex gap-6 justify-center">
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 p-5 rounded-2xl w-36 shadow-lg">
-                <div className="text-teal-400 text-3xl font-black mb-1">0ms</div>
-                <div className="text-slate-400 text-sm font-bold">زمن التأخير</div>
-            </div>
-            <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 p-5 rounded-2xl w-36 shadow-lg">
-                <div className="text-teal-400 text-3xl font-black mb-1">100%</div>
-                <div className="text-slate-400 text-sm font-bold">دقة البيانات</div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
+      {/* 2. Main Reality Card */}
+      <div className="relative">
+        <AnimatePresence mode="wait">
+            <motion.div
+                key={mode}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className={`relative w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border ${mode === 'smart' ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950 border-white/5' : 'bg-gradient-to-br from-white via-rose-50/30 to-rose-50/50 border-rose-100'}`}
+            >
+                {/* Background Decoration */}
+                <div className="absolute inset-0 opacity-10">
+                    <div className={`absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,${mode === 'smart' ? '#2dd4bf' : '#e11d48'},transparent_40%)]`}></div>
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+                </div>
 
-      {/* ------------------------------------------------------ */}
-      {/* LAYER 2: TOP (TRADITIONAL SYSTEM - RIGHT SIDE)        */}
-      {/* Clipped from LEFT to reveal Bottom Layer.             */}
-      {/* ------------------------------------------------------ */}
-      <motion.div 
-        className="absolute inset-0 bg-slate-100 flex items-center justify-center overflow-hidden z-20"
-        style={{ clipPath: clipPathVal }}
-      >
-        {/* Background */}
-        <div className="absolute inset-0 opacity-40 mix-blend-multiply bg-slate-200">
-             {/* Simple noise pattern */}
-             <svg className='absolute inset-0 w-full h-full opacity-20' xmlns='http://www.w3.org/2000/svg'>
-                 <filter id='noiseFilter'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/></filter>
-                 <rect width='100%' height='100%' filter='url(#noiseFilter)'/>
-             </svg>
-        </div>
-        
-        {/* Content */}
-        <motion.div 
-          style={{ x: textX_Traditional }}
-          className="relative z-10 text-center px-4"
-        >
-           <div className="inline-flex p-5 rounded-full bg-slate-200 border border-slate-300 mb-8 grayscale opacity-60">
-            <svg className="w-16 h-16 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
+                <div className="relative z-10 p-6 sm:p-8 md:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                    
+                    {/* Left: Illustrative Pulse */}
+                    <div className="relative shrink-0">
+                        <motion.div 
+                            animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                            className={`absolute inset-0 blur-3xl opacity-20 rounded-full ${mode === 'smart' ? 'bg-teal-400' : 'bg-rose-500'}`}
+                        />
+                        <div className={`w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center shadow-lg transform rotate-3 bg-white/5 backdrop-blur-md border ${mode === 'smart' ? 'border-teal-500/30' : 'border-rose-200 shadow-rose-100'}`}>
+                            {current.icon}
+                        </div>
+                    </div>
 
-          <h3 className="text-4xl md:text-6xl font-black text-slate-400 mb-4 blur-[0.5px]">
-            النظام التقليدي
-          </h3>
-          <p className="text-slate-500 text-xl font-medium tracking-wide mb-10">
-            روتين. بيروقراطية. بيانات مفقودة.
-          </p>
+                    {/* Middle: Key Text Content */}
+                    <div className="flex-1 text-right">
+                        <div className="mb-4">
+                            <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-3 border ${mode === 'smart' ? 'bg-teal-500/10 text-teal-400 border-teal-500/20' : 'bg-rose-500/10 text-rose-600 border-rose-500/20'}`}>
+                                {current.subtitle}
+                            </span>
+                            <h3 className={`text-3xl md:text-5xl font-black mb-4 ${mode === 'smart' ? 'text-white' : 'text-slate-800'}`}>
+                                {current.title}
+                            </h3>
+                            <p className={`text-base md:text-xl leading-relaxed font-medium ${mode === 'smart' ? 'text-slate-400' : 'text-slate-500'}`}>
+                                {current.desc}
+                            </p>
+                        </div>
+                    </div>
 
-          <div className="flex gap-6 justify-center opacity-60">
-            <div className="bg-white border border-slate-200 p-5 rounded-2xl w-36">
-                <div className="text-red-900/50 text-3xl font-black mb-1">4h+</div>
-                <div className="text-slate-400 text-sm font-bold">زمن التأخير</div>
-            </div>
-            <div className="bg-white border border-slate-200 p-5 rounded-2xl w-36">
-                <div className="text-red-900/50 text-3xl font-black mb-1">???</div>
-                <div className="text-slate-400 text-sm font-bold">دقة البيانات</div>
-            </div>
-          </div>
-        </motion.div>
+                    {/* Right: Real-time Stats */}
+                    <div className="w-full md:w-72 space-y-4">
+                        {current.metrics.map((m, i) => (
+                            <motion.div 
+                                key={i}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 * i }}
+                                className={`p-4 rounded-2xl border ${mode === 'smart' ? 'bg-white/5 border-white/5' : 'bg-white border-rose-100 shadow-sm'}`}
+                            >
+                                <div className={`text-[10px] font-bold mb-1 uppercase tracking-wider ${mode === 'smart' ? 'text-slate-500' : 'text-rose-300'}`}>{m.label}</div>
+                                <div className={`text-xl md:text-2xl font-black ${mode === 'smart' ? 'text-teal-400' : 'text-rose-600'}`}>
+                                    {m.value}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
 
-        {/* Shadow Overlay at the cut line for depth */}
-        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/10 to-transparent pointer-events-none"></div>
+                </div>
 
-      </motion.div>
+                {/* Bottom Notification */}
+                <div className={`px-8 py-3 text-center text-[10px] font-bold tracking-tight uppercase border-t ${mode === 'smart' ? 'bg-teal-400/5 border-white/5 text-teal-500/50' : 'bg-rose-500/5 border-rose-100 text-rose-400'}`}>
+                    {mode === 'smart' ? 'محاكاة: حالة النظام مستقرة بنسبة 100%' : 'محاكاة: مخاطر عالية وتأخر في المعالجة'}
+                </div>
 
-
-      {/* ------------------------------------------------------ */}
-      {/* SLIDER HANDLE                                         */}
-      {/* ------------------------------------------------------ */}
-      <motion.div 
-        className="absolute inset-y-0 w-1.5 bg-white z-30 shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-none"
-        style={{ left: handlePosition }}
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full shadow-xl flex items-center justify-center border-[6px] border-slate-50 text-slate-400">
-            <svg className="w-6 h-6 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-            </svg>
-        </div>
-      </motion.div>
+            </motion.div>
+        </AnimatePresence>
+      </div>
 
     </div>
   );
 };
 
-export default BeforeAfterSlider;
+export default ScenarioSwitcher;

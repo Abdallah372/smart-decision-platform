@@ -1,216 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SpeedComparison = () => {
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [showResult, setShowResult] = useState(false);
+  const [status, setStatus] = useState('idle'); // 'idle', 'running', 'finished'
+  const [fastProgress, setFastProgress] = useState(0);
+  const [slowProgress, setSlowProgress] = useState(0);
 
-  const startComparison = () => {
-    setIsAnimating(true);
-    setShowResult(false);
-    
-    // Show result after smart system completes
-    setTimeout(() => {
-      setShowResult(true);
-    }, 500);
-
-    // Reset for replay
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 7000);
+  const startRace = () => {
+    setStatus('running');
+    setFastProgress(0);
+    setSlowProgress(0);
   };
 
+  useEffect(() => {
+    if (status !== 'running') return;
+
+    // Fast timer (0.5s)
+    const fastTimer = setInterval(() => {
+      setFastProgress(prev => {
+        if (prev >= 100) {
+            clearInterval(fastTimer);
+            return 100;
+        }
+        return prev + 10;
+      });
+    }, 50);
+
+    // Slow timer (6s)
+    const slowTimer = setInterval(() => {
+      setSlowProgress(prev => {
+        if (prev >= 100) {
+            clearInterval(slowTimer);
+            setStatus('finished');
+            return 100;
+        }
+        return prev + 1;
+      });
+    }, 60);
+
+    return () => {
+        clearInterval(fastTimer);
+        clearInterval(slowTimer);
+    };
+  }, [status]);
+
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      {/* Comparison Grid */}
-      <div className="grid md:grid-cols-2 gap-8 mb-8">
+    <div className="w-full max-w-4xl mx-auto bg-slate-900/50 backdrop-blur-xl p-6 sm:p-10 rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden">
+      
+      <div className="space-y-12">
         
-        {/* Traditional Dashboard */}
-        <motion.div 
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-white relative overflow-hidden"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold">نظام عرض البيانات</h3>
-            <svg className="w-6 h-6 text-red-100 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
+        {/* Row 1: Smart System */}
+        <div className="relative">
+          <div className="flex justify-between items-center mb-4">
+             <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-teal-500/20 rounded-xl flex items-center justify-center text-teal-400 border border-teal-500/30">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                   <h4 className="text-white font-bold">نظام منصتنا (الاستباقي)</h4>
+                   <p className="text-teal-400/60 text-xs">تحليل لحظي + قرار فوري</p>
+                </div>
+             </div>
+             <div className="text-right">
+                <span className="text-2xl font-black text-teal-400">0.5s</span>
+             </div>
           </div>
-
-          {/* Animation Timeline */}
-          <div className="h-32 flex items-center justify-center relative">
+          
+          {/* Progress Track */}
+          <div className="h-4 bg-white/5 rounded-full overflow-hidden relative border border-white/5">
+            <motion.div 
+               initial={{ width: 0 }}
+               animate={{ width: `${fastProgress}%` }}
+               className="h-full bg-gradient-to-r from-teal-500 to-emerald-400 shadow-[0_0_15px_rgba(20,184,166,0.5)]"
+            />
             <AnimatePresence>
-              {isAnimating && (
-                <>
-                  {/* Document appears slowly */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 2 }}
-                    className="absolute"
-                  >
-                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </motion.div>
-
-                  {/* Arrow moves slowly */}
-                  <motion.div
-                    initial={{ x: -30, opacity: 0 }}
-                    animate={{ x: 30, opacity: [0, 1, 1, 0] }}
-                    transition={{ delay: 2, duration: 2 }}
-                    className="absolute"
-                  >
-                    <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </motion.div>
-
-                  {/* Person thinking */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 4, duration: 1.5 }}
-                    className="absolute"
-                  >
-                    <div className="relative">
-                      <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        className="absolute -top-2 -right-2 text-yellow-400 text-xl"
-                      >
-                        ?
-                      </motion.div>
-                    </div>
-                  </motion.div>
-
-                  {/* Question mark result */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 5.5, duration: 0.5 }}
-                    className="absolute"
-                  >
-                    <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
-                      <span className="text-3xl text-red-400">?</span>
-                    </div>
-                  </motion.div>
-                </>
-              )}
+                {fastProgress === 100 && (
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black text-white px-2 bg-emerald-600 rounded-full"
+                    >
+                        DONE
+                    </motion.div>
+                )}
             </AnimatePresence>
           </div>
+        </div>
 
-          <p className="text-sm opacity-60 font-bold border-t border-white/10 pt-4 mt-4">
-            ⏱️ المدة: <span className="text-red-400">6 ثوانٍ</span>
-          </p>
-        </motion.div>
-
-        {/* Smart Recommendation */}
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-green-600 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden"
-        >
-          <motion.div 
-            animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="absolute top-0 left-0 w-32 h-32 bg-white/10 -translate-x-16 -translate-y-16 rounded-full blur-2xl"
-          />
-
-          <div className="flex items-center justify-between mb-6 relative z-10">
-            <h3 className="text-xl font-bold">نظام التوصية بالقرار</h3>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+        {/* Row 2: Traditional System */}
+        <div className="relative">
+          <div className="flex justify-between items-center mb-4">
+             <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-slate-700/30 rounded-xl flex items-center justify-center text-slate-400 border border-white/5">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                   <h4 className="text-slate-300 font-bold">الأنظمة التقليدية</h4>
+                   <p className="text-slate-500 text-xs">انتظار البلاغات + دورة ورقية</p>
+                </div>
+             </div>
+             <div className="text-right">
+                <span className="text-2xl font-black text-slate-500">6.0s</span>
+             </div>
           </div>
-
-          {/* Animation Timeline */}
-          <div className="h-32 flex items-center justify-center relative">
-            <AnimatePresence>
-              {isAnimating && (
-                <>
-                  {/* Lightning appears instantly */}
-                  <motion.div
-                    initial={{ scale: 0, rotate: -45 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.3, type: "spring" }}
-                    className="absolute"
-                  >
-                    <svg className="w-16 h-16 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </motion.div>
-
-                  {/* Checkmark appears quickly */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.2, type: "spring" }}
-                    className="absolute"
-                  >
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
-                      <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" 
-                          d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+          
+          {/* Progress Track */}
+          <div className="h-4 bg-white/5 rounded-full overflow-hidden relative border border-white/5">
+            <motion.div 
+               initial={{ width: 0 }}
+               animate={{ width: `${slowProgress}%` }}
+               className="h-full bg-slate-600 shadow-[0_0_10px_rgba(255,255,255,0.05)]"
+            />
+            {status === 'running' && slowProgress < 100 && (
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex gap-1">
+                    <div className="w-1 h-1 bg-white/40 rounded-full animate-bounce"></div>
+                    <div className="w-1 h-1 bg-white/40 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                    <div className="w-1 h-1 bg-white/40 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                </div>
+            )}
           </div>
+        </div>
 
-          <p className="text-sm border-t border-white/20 pt-4 mt-4 font-bold relative z-10">
-            ⏱️ المدة: <span className="text-yellow-300">0.5 ثانية</span>
-          </p>
-        </motion.div>
       </div>
 
-      {/* Time Saved Result */}
+      {/* Result Card */}
       <AnimatePresence>
-        {showResult && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", duration: 0.6 }}
-            className="text-center"
-          >
-            <div className="inline-block bg-gradient-to-r from-green-500 to-blue-500 px-8 py-4 rounded-2xl shadow-2xl">
-              <p className="text-white font-black text-2xl">
-                ⏱️ توفير: <span className="text-yellow-300">5.5 ثانية</span>
-              </p>
-              <p className="text-white/80 text-sm mt-2">
-                في الأزمات، كل ثانية = حياة
-              </p>
-            </div>
-          </motion.div>
-        )}
+          {status === 'finished' && (
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-12 bg-white/5 border border-white/10 p-6 rounded-2xl text-center"
+              >
+                  <p className="text-white text-lg font-bold mb-1">لقد وفرنا <span className="text-teal-400">92%</span> من الوقت الضائع*</p>
+                  <p className="text-slate-400 text-sm">في الأزمات، الوقت ليس مالاً فقط.. الوقت هو حياة.</p>
+                  <p className="text-[10px] text-slate-500 mt-4 italic">* نسبة محاكاة مبنية على فارق معالجة البيانات بين الأنظمة اليدوية والرقمية.</p>
+              </motion.div>
+          )}
       </AnimatePresence>
 
-      {/* Start Button */}
-      <div className="text-center mt-8">
+      {/* Control Button */}
+      <div className="mt-12 flex justify-center">
         <button
-          onClick={startComparison}
-          disabled={isAnimating}
-          className="bg-white text-blue-900 px-8 py-3 rounded-xl font-bold hover:bg-blue-50 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
+          onClick={startRace}
+          disabled={status === 'running'}
+          className={`
+            px-10 py-4 rounded-full font-black text-lg transition-all transform hover:scale-105 active:scale-95
+            ${status === 'running' 
+                ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+                : 'bg-white text-blue-900 shadow-[0_10px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_40px_rgba(255,255,255,0.3)]'}
+          `}
         >
-          {isAnimating ? 'جاري المقارنة...' : 'شاهد الفرق'}
+          {status === 'running' ? 'يتم التحليل الرقمي...' : 'بدء تجربة المحاكاة'}
         </button>
       </div>
+
     </div>
   );
 };

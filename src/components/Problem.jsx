@@ -14,7 +14,6 @@ const Problem = () => {
           </p>
         </div>
         
-        {/* Mobile: Stacked Vertical, Desktop: Grid */}
         <div className="flex flex-col md:grid md:grid-cols-3 gap-6 sm:gap-8 text-right">
           
           <div className="bg-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-150">

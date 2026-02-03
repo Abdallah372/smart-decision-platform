@@ -7,7 +7,6 @@ const Solution = () => {
     <section id="solution" className="bg-white py-12 sm:py-24 text-right">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Data Flow Visualization */}
         <div className="mb-10 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900 mb-4 sm:mb-6 text-center leading-tight">
             كيف نحوّل البيانات إلى قرارات؟
@@ -15,10 +14,8 @@ const Solution = () => {
           <DataFlowAnimation />
         </div>
 
-        {/* Mobile: Stacked (Reverse), Desktop: Grid */}
         <div className="flex flex-col md:grid md:grid-cols-2 gap-8 sm:gap-16 items-center">
           
-          {/* Visual Element (Bottom on mobile) */}
           <div className="relative order-2 md:order-1 w-full">
             <div className="bg-green-50 rounded-3xl sm:rounded-[50px] p-6 sm:p-12 relative overflow-hidden aspect-square sm:aspect-auto">
                <div className="w-full h-full border-4 border-dashed border-green-200 rounded-2xl sm:rounded-[40px] flex items-center justify-center p-4 sm:p-8">
@@ -29,7 +26,6 @@ const Solution = () => {
             </div>
           </div>
           
-          {/* Content (Top on mobile) */}
           <div className="order-1 md:order-2 w-full">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-900 mb-6 sm:mb-8 leading-tight">بروتوكول البناء: من البيانات إلى التوصية</h2>
             <div className="space-y-6 sm:space-y-8">

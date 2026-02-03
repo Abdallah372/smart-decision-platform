@@ -7,25 +7,25 @@ const DecisionScenario = () => {
     <section id="scenario" className="bg-gradient-to-b from-white to-gray-50 py-24 text-right overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-blue-900 mb-4">
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 mb-6 font-sans">
             تخيّل: أنت صانع القرار الآن
           </h2>
-          <p className="text-gray-600 text-lg sm:text-xl max-w-3xl mx-auto">
-            <span className="font-bold text-blue-700">السيناريو:</span> أزمة مياه صامتة الساعة 4 فجرًا. 
-            <br />
-            اسحب الشريط لترى الفرق بين النظامين.
-          </p>
+          <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-2xl inline-block">
+            <p className="text-slate-600 text-base md:text-lg max-w-3xl mx-auto">
+                <span className="font-black text-blue-700">السيناريو:</span> أزمة مياه صامتة تبدأ الساعة 4 فجرًا. 
+                <br />
+                <span className="text-sm font-bold text-slate-400">بدّل بين الأنظمة أدناه لملاحظة الفرق في الاستجابة اللحظية.</span>
+            </p>
+          </div>
         </motion.div>
 
-        {/* Interactive Slider */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -36,7 +36,6 @@ const DecisionScenario = () => {
           <BeforeAfterSlider />
         </motion.div>
 
-        {/* Key Insights - Condensed */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +68,6 @@ const DecisionScenario = () => {
           </div>
         </motion.div>
 
-        {/* Closing Statement */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}

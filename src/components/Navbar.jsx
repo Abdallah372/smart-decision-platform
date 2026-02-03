@@ -4,7 +4,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -17,7 +16,7 @@ const Navbar = () => {
     setIsOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      const navHeight = 80; // Approximate height of navbar
+      const navHeight = 80; 
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navHeight;
   
@@ -46,7 +45,6 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Logo */}
           <div 
             className="flex flex-col items-start cursor-pointer group"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -59,7 +57,6 @@ const Navbar = () => {
             </span>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
              <div className="flex items-center gap-1">
                {navLinks.map((link) => (
@@ -77,7 +74,6 @@ const Navbar = () => {
             
             <div className="h-6 w-px bg-slate-200 mx-2"></div>
 
-            {/* CTA Button */}
             <button 
               onClick={() => scrollToSection('hypothesis')}
               className="px-5 py-2 text-sm font-semibold text-teal-800 bg-teal-50 border border-teal-200 hover:bg-teal-100 rounded-full transition-all duration-300 shadow-sm hover:shadow"
@@ -86,7 +82,6 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -107,10 +102,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       <div 
-        className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-lg transition-all duration-300 origin-top overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-lg transition-all duration-500 ease-in-out origin-top overflow-y-auto ${
+          isOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
         <div className="px-4 py-4 space-y-2 flex flex-col items-stretch">

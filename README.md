@@ -1,16 +1,56 @@
-# React + Vite
+# نموذج محاكاة منصة القرار الذكي (SDP Prototype)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**مشروع بحثي تفاعلي يستعرض نموذجاً أولياً (Proof of Concept) لمنهجية تحويل البيانات الرقمية إلى قرارات استباقية في إدارة الأزمات.**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 1. طبيعة المشروع (Project Positioning)
 
-## React Compiler
+هذا المشروع هو **نموذج محاكاة بصري (Interactive Simulator)** وليس نظاماً برمجياً متكاملاً للمعالجة الفورية. يهدف إلى إثبات المفهوم (**Proof of Concept**) وتوضيح الفوائد المحتملة لدمج البيانات مع خوارزميات دعم القرار العلمي.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 2. المشكلة والمنهجية
 
-## Expanding the ESLint configuration
+- **المشكلة:** معالجة بطء الاستجابة التقليدية والتحيز البشري في اتخاذ القرار.
+- **المنهجية:** استخدام **المنهج التجريبي المقارن** عبر محاكاة سيناريوهات (A/B Testing) لإظهار الفارق بين الأنظمة التفاعلية (Reactive) والأنظمة الاستباقية (Proactive).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 3. الميزات التقنية للنموذج
+
+- **محاكي قرار تفاعلي:** واجهة تتيح للمستخدم استكشاف الفروقات الجذرية في زمن الاستجابة.
+- **هندسة المكونات:** مبني باستخدام React مع معمارية تضمن سهولة ربط الأنظمة الخلفية (Backend-Ready).
+- **منطق اتخاذ القرار:** عرض مرئي لخوارزمية معالجة المدخلات (Inputs → Logic → Output).
+- **قابلية التوسع:** دمج مصادر بيانات خارجية تجريبية لإثبات مرونة النظام.
+
+## 4. التقنيات المستخدمة
+
+- **React.js (Vite):** إطار العمل الأساسي لضمان سرعة الاستجابة.
+- **Tailwind CSS:** لبناء واجهة مستخدم احترافية تدعم مبادئ التصميم الأكاديمي.
+- **Framer Motion:** لإضفاء طابع حيوي على سيناريوهات المحاكاة.
+- **Native Fetch API:** للتفاعل مع مصادر بيانات خارجية (Live Data Proof).
+
+## 5. منطق المحاكاة (Disclaimer)
+
+جميع الأرقام الإحصائية والنسب المئوية الواردة (مثل توفير 92% من الوقت أو تقليل التحيز بنسبة 40%) هي **قيم افتراضية مبنية على الدراسات النظرية المرجعية**، وتُستخدم في هذا النموذج لأغراض التوضيح البصري والمقارنة المنهجية فقط.
+
+## 6. لقطات من النموذج
+
+> [صورة واجهة المحاكي الرئيسي]
+> [صورة مخطط تدفق البيانات]
+> [صورة مقارنة السرعة الرقمية]
+
+## 7. حدود النموذج الحالي (Current Scope)
+
+- **الواجهة:** (Front-end Only) تركز على تجربة المستخدم ومنطق العرض.
+- **البيانات:** يستخدم بيانات محاكاة (Mock Data) ثابتة، مع ارتباط تجريبي واحد بمصدر خارجي.
+- **الذكاء الاصطناعي:** يمثل المنطق البرمجي (Static Logic) وليس نماذج تعليم آلي (ML) حية.
+
+## 8. خارطة الطريق المستقبلية (Roadmap)
+
+1. بناء نظام خلفي (Node.js/Python) لمعالجة البيانات الضخمة.
+2. دمج نماذج التعلم الآلي للتنبؤ الفعلـي بالأزمات.
+3. ربط واسع النطاق بحساسات إنترنت الأشياء (IoT).
+
+## 9. التشغيل والمطورة
+
+- **تطوير:** جنان م. (Jenan)
+- **التشغيل:** `npm install` ثم `npm run dev`.
+- **الترخيص:** حقوق الطبع محفوظة للأغراض البحثية © 2026.

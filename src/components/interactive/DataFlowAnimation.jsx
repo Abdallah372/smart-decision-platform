@@ -1,107 +1,72 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
+/**
+ * DataFlowAnimation - A reimagined, ultra-stable visualizer.
+ * Fixes alignment issues by using a single SVG-based path or consistent relative positioning.
+ */
 const DataFlowAnimation = () => {
-  const nodes = [
-    { 
-      id: 'raw', 
-      label: 'بيانات خام', 
-      icon: '📊',
-      color: 'bg-gray-400',
-      delay: 0 
-    },
-    { 
-      id: 'analysis', 
-      label: 'تحليل', 
-      icon: '🧠',
-      color: 'bg-blue-500',
-      delay: 0.8 
-    },
-    { 
-      id: 'decision', 
-      label: 'قرار', 
-      icon: '✅',
-      color: 'bg-green-500',
-      delay: 1.6 
-    }
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const steps = [
+    { id: 'raw', label: 'بيانات خام', icon: '📊', color: 'bg-slate-400' },
+    { id: 'analysis', label: 'تحليل ذكي', icon: '🧠', color: 'bg-blue-500' },
+    { id: 'decision', label: 'قرار فوري', icon: '✅', color: 'bg-emerald-500' }
   ];
 
   return (
-    <motion.div 
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      className="relative w-full max-w-3xl mx-auto py-12"
-    >
-      {/* Nodes Container */}
-      <div className="flex justify-between items-center relative" dir="rtl">
-        {nodes.map((node, index) => (
-          <React.Fragment key={node.id}>
-            {/* Node */}
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, scale: 0.8 },
-                visible: { 
-                  opacity: 1, 
-                  scale: 1,
-                  transition: { delay: node.delay, duration: 0.5 }
-                }
-              }}
-              className="relative z-10"
+    <div className="w-full max-w-4xl mx-auto py-12 px-4" dir="rtl">
+      <div className={`flex ${isMobile ? 'flex-col' : 'flex-row-reverse'} items-center justify-between relative gap-8 md:gap-0`}>
+        
+        {steps.map((step, idx) => (
+          <React.Fragment key={step.id}>
+            {/* The Node */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.4 }}
+              className="flex flex-col items-center z-10"
             >
-              <motion.div
-                className={`${node.color} w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-lg`}
-                whileInView={{
-                  boxShadow: [
-                    "0 10px 30px rgba(0,0,0,0.1)",
-                    "0 10px 40px rgba(59, 130, 246, 0.4)",
-                    "0 10px 30px rgba(0,0,0,0.1)"
-                  ]
-                }}
-                transition={{
-                  delay: node.delay + 0.5,
-                  duration: 0.6,
-                  repeat: Infinity,
-                  repeatDelay: 2
-                }}
-              >
-                {node.icon}
-              </motion.div>
-              <p className="text-center mt-3 font-bold text-gray-700 text-sm">
-                {node.label}
-              </p>
+              <div className={`${step.color} w-20 h-20 md:w-28 md:h-28 rounded-3xl flex items-center justify-center text-3xl md:text-5xl shadow-xl border-4 border-white transform rotate-3 hover:rotate-0 transition-transform duration-300`}>
+                {step.icon}
+              </div>
+              <span className="mt-4 font-black text-slate-800 text-sm md:text-lg">{step.label}</span>
             </motion.div>
 
-            {/* Flow Particles between nodes */}
-            {index < nodes.length - 1 && (
-              <div className="flex-1 relative h-1 mx-4">
-                {/* Base Line */}
-                <div className="absolute inset-0 bg-gray-200 rounded-full" />
+            {/* The Connector */}
+            {idx < steps.length - 1 && (
+              <div className={`relative flex items-center justify-center ${isMobile ? 'h-24 w-1' : 'flex-1 h-1 mx-6'}`}>
+                {/* Visual Path */}
+                <div className={`absolute inset-0 bg-slate-100/80 rounded-full ${isMobile ? 'w-1.5 h-full' : 'h-1.5 w-full'}`} />
                 
-                {/* Animated Particles */}
-                {[0, 1, 2].map((particleIndex) => (
+                {/* Moving Particles */}
+                {[0, 1, 2].map((p) => (
                   <motion.div
-                    key={particleIndex}
-                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
-                    style={{
-                      background: index === 0 
-                        ? 'rgb(156, 163, 175)' 
-                        : index === 1 
-                        ? 'rgb(59, 130, 246)' 
-                        : 'rgb(34, 197, 94)',
-                      right: '100%'
-                    }}
-                    animate={{
-                      right: ['100%', '-12px'],
+                    key={p}
+                    className="absolute w-3 h-3 md:w-4 md:h-4 bg-blue-400 rounded-full shadow-[0_0_15px_rgba(96,165,250,0.6)] z-20"
+                    animate={isMobile ? {
+                      top: ['0%', '100%'],
                       opacity: [0, 1, 1, 0],
-                      scale: [0.5, 1, 1, 0.5]
+                      scale: [0.8, 1.2, 0.8]
+                    } : {
+                      // Desktop: Right to Left
+                      right: ['0%', '100%'],
+                      opacity: [0, 1, 1, 0],
+                      scale: [0.8, 1.2, 0.8]
                     }}
                     transition={{
-                      duration: index === 0 ? 1.5 : index === 1 ? 1.2 : 0.8,
-                      delay: nodes[index].delay + 0.5 + (particleIndex * 0.3),
+                      duration: 2,
                       repeat: Infinity,
-                      repeatDelay: 1.5,
-                      ease: "easeInOut"
+                      delay: (idx * 0.5) + (p * 0.6),
+                      ease: "linear"
                     }}
                   />
                 ))}
@@ -109,19 +74,22 @@ const DataFlowAnimation = () => {
             )}
           </React.Fragment>
         ))}
+        
       </div>
 
-      {/* Insight Label */}
-      <motion.p
+      {/* Modern Insight Legend */}
+      <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 2.5, duration: 0.8 }}
-        className="text-center mt-8 text-blue-600 font-bold text-lg italic"
+        className="mt-20 text-center"
       >
-        "النظام لا يخزن البيانات، بل يُسرّعها نحو الفعل"
-      </motion.p>
-    </motion.div>
+        <div className="inline-flex flex-col md:flex-row items-center gap-4 bg-slate-900 text-white px-8 py-4 rounded-[2rem] shadow-2xl border border-white/10">
+            <span className="text-teal-400 font-black text-xl">"البيانات هي الوقود، والقرار هو المحرك"</span>
+            <div className="hidden md:block w-px h-6 bg-white/20"></div>
+            <span className="text-slate-400 text-sm">نظام SDP يحول المدخلات إلى أفعال في أجزاء من الثانية.</span>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
