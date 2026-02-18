@@ -25,7 +25,7 @@ const Innovation = () => {
             </div>
             <h2
               className="font-black text-white mb-5 leading-tight tracking-tight"
-              style={{ fontSize: "var(--text-huge)" }}
+              style={{ fontSize: "var(--text-2xl)" }}
             >
               الابتكار في <span className="text-sky-400">جوهر القرار</span>
             </h2>

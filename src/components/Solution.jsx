@@ -75,7 +75,7 @@ const Solution = () => {
           <div className="order-1 lg:order-2 w-full">
             <h2
               className="font-black text-white mb-8 leading-tight"
-              style={{ fontSize: "var(--text-huge)" }}
+              style={{ fontSize: "var(--text-2xl)" }}
             >
               بروتوكول البناء <br />
               <span className="text-sky-400">من البيانات للتمكين</span>

@@ -23,7 +23,7 @@ const Hero = () => {
             </div>
 
             <h1
-              className="font-black text-white leading-[1.1] mb-6 tracking-tight"
+              className="font-black text-white mb-6 tracking-tight"
               style={{ fontSize: "var(--text-huge)" }}
             >
               محاكي أنظمة <br />

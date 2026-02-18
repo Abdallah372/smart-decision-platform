@@ -37,120 +37,120 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled || isOpen
-          ? "bg-[#020617]/90 backdrop-blur-xl shadow-2xl border-b border-white/5"
-          : "bg-transparent"
-      }`}
+      className={`fixed z-50 transition-all duration-500 ease-in-out ${
+        scrolled && !isOpen
+          ? "glass-nav floating-nav h-16 md:h-18"
+          : "top-0 left-0 right-0 h-20 md:h-24 bg-transparent"
+      } ${isOpen ? "top-0 left-0 right-0 h-20 bg-[#020617]" : ""}`}
       dir="rtl"
     >
-      <div className="max-w-7xl mx-auto px-[var(--space-s)] sm:px-[var(--space-m)] lg:px-8">
-        <div className="flex items-center justify-between h-20 md:h-24">
-          <div
-            className="flex flex-col items-start cursor-pointer group"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <h1 className="text-base md:text-xl font-black text-white tracking-tight group-hover:text-sky-400 transition-colors duration-300">
-              عبدالله العبادي — بحث 2026
-            </h1>
-            <span className="text-[7px] md:text-[9px] uppercase tracking-[0.18em] text-slate-500 font-bold mt-0.5">
-              المريناب الثانوية · إدفو · أسوان
+      <div className="h-full max-w-7xl mx-auto px-5 md:px-10 flex items-center justify-between">
+        {/* Logo Section */}
+        <div
+          className="flex flex-col items-start cursor-pointer group"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <h1 className="text-sm md:text-base lg:text-lg font-black text-white tracking-tight group-hover:text-sky-400 transition-all duration-300">
+            عبدالله العبادي{" "}
+            <span className="text-sky-500/50 mx-1 hidden sm:inline">/</span>{" "}
+            <span className="text-slate-400 font-medium group-hover:text-white hidden sm:inline">
+              بحث 2026
+            </span>
+          </h1>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-[7px] md:text-[9px] uppercase tracking-widest text-slate-500 font-bold">
+              المريناب الثانوية · إدفو
             </span>
           </div>
+        </div>
 
-          <div className="hidden md:flex items-center gap-4 lg:gap-8">
-            <div className="flex items-center gap-1 lg:gap-2">
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className={`px-3 lg:px-4 py-2 text-sm font-bold rounded-xl transition-all duration-300 ${
-                    scrolled
-                      ? "text-slate-400 hover:text-white hover:bg-slate-800"
-                      : "text-slate-300 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  {link.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="h-6 w-px bg-slate-800 mx-2"></div>
-
-            <button
-              onClick={() => scrollToSection("hypothesis")}
-              className="px-6 py-2.5 text-sm font-bold text-white bg-sky-600 hover:bg-sky-500 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)] active:scale-95"
-            >
-              عرض الفرضية
-            </button>
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center p-1 bg-white/5 rounded-xl border border-white/5 backdrop-blur-md">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="px-3 py-1.5 text-xs lg:text-sm font-bold text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+              >
+                {link.label}
+              </button>
+            ))}
           </div>
 
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-all focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
+          <button
+            onClick={() => scrollToSection("hypothesis")}
+            className="px-5 py-2 text-xs lg:text-sm font-black text-white bg-sky-600 hover:bg-sky-500 rounded-xl transition-all duration-300 shadow-lg shadow-sky-900/20 active:scale-95"
+          >
+            الفرضية
+          </button>
+        </div>
+
+        {/* Mobile Toggle */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white transition-all active:scale-90"
+          >
+            {isOpen ? (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M4 8h16M4 16h16"
+                />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-[#020617]/98 backdrop-blur-2xl border-b border-white/5 shadow-2xl transition-all duration-500 ease-in-out origin-top overflow-hidden ${
+        className={`md:hidden absolute top-full left-0 w-full glass-nav border-t border-white/5 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden ${
           isOpen
-            ? "max-h-[80vh] opacity-100"
-            : "max-h-0 opacity-0 pointer-events-none"
+            ? "max-h-[100vh] opacity-100 py-8"
+            : "max-h-0 opacity-0 pointer-events-none py-0"
         }`}
       >
-        <div className="px-[var(--space-m)] py-[var(--space-m)] space-y-2 flex flex-col items-stretch">
-          {navLinks.map((link) => (
+        <div className="flex flex-col items-center gap-4 px-8">
+          {navLinks.map((link, idx) => (
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="block w-full text-right px-6 py-4 text-[var(--text-lg)] font-bold text-slate-300 hover:text-sky-400 hover:bg-white/5 rounded-2xl transition-all duration-300 border-r-4 border-transparent hover:border-sky-500"
+              className="w-full py-4 text-center text-lg font-black text-slate-300 hover:text-sky-400 hover:bg-white/5 rounded-2xl transition-all duration-300"
+              style={{ transitionDelay: `${idx * 50}ms` }}
             >
               {link.label}
             </button>
           ))}
-          <div className="pt-6 mt-4 border-t border-white/5">
-            <button
-              onClick={() => scrollToSection("hypothesis")}
-              className="w-full text-center px-6 py-5 text-lg font-black text-white bg-sky-600 hover:bg-sky-500 rounded-2xl shadow-[0_20px_40px_rgba(14,165,233,0.3)] transition-all duration-300"
-            >
-              عرض الفرضية
-            </button>
-          </div>
+          <button
+            onClick={() => scrollToSection("hypothesis")}
+            className="w-full mt-4 py-5 text-xl font-black text-white bg-sky-600 rounded-2xl shadow-2xl shadow-sky-900/40"
+          >
+            عرض الفرضية المختصرة
+          </button>
         </div>
       </div>
     </nav>

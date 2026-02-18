@@ -34,7 +34,7 @@ const ApiLiveProof = () => {
               <span className="w-1.5 h-1.5 bg-sky-500 rounded-full"></span>
               إثبات قابلية التوسع — نموذج بحثي
             </div>
-            <h2 className="text-[var(--text-xl)] md:text-[var(--text-huge)] font-black mb-8 leading-tight tracking-tight">
+            <h2 className="text-[var(--text-2xl)] font-black mb-8 leading-tight tracking-tight">
               قابلية التوسع <br />
               <span className="text-sky-400">والارتباط الرقمي</span>
             </h2>

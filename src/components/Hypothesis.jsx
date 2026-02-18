@@ -24,7 +24,7 @@ const Hypothesis = () => {
             </div>
             <h2
               className="font-black text-white mb-5 leading-tight"
-              style={{ fontSize: "var(--text-huge)" }}
+              style={{ fontSize: "var(--text-2xl)" }}
             >
               فرضية البحث: <br />
               <span className="text-sky-400">الاستباقية الرقمية</span>

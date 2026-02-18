@@ -48,7 +48,7 @@ const Impact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="font-black text-white mb-5 tracking-tight leading-tight"
-            style={{ fontSize: "var(--text-huge)" }}
+            style={{ fontSize: "var(--text-2xl)" }}
           >
             برهان الأثر: كيف نتأكد من صحة القرار؟
           </motion.h2>
@@ -139,7 +139,7 @@ const Impact = () => {
             </div>
             <h3
               className="font-bold mb-5 text-sky-400"
-              style={{ fontSize: "var(--text-2xl)" }}
+              style={{ fontSize: "var(--text-xl)" }}
             >
               حدود النظام وأخلاقيات القرار
             </h3>
@@ -184,7 +184,7 @@ const Impact = () => {
           >
             <h3
               className="font-bold text-white mb-5 underline decoration-sky-500 underline-offset-[10px] decoration-2"
-              style={{ fontSize: "var(--text-2xl)" }}
+              style={{ fontSize: "var(--text-xl)" }}
             >
               التوافق الرقمي والوطني
             </h3>

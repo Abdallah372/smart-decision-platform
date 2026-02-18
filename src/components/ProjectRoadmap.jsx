@@ -9,7 +9,7 @@ const ProjectRoadmap = () => {
     >
       <div className="max-w-7xl mx-auto px-[var(--space-s)] sm:px-[var(--space-m)] lg:px-8">
         <div className="text-center mb-20 md:mb-24">
-          <h2 className="text-[var(--text-2xl)] md:text-[var(--text-huge)] font-black text-white mb-8 tracking-tight leading-tight">
+          <h2 className="text-[var(--text-2xl)] font-black text-white mb-8 tracking-tight leading-tight">
             حدود النموذج <span className="text-sky-400">وخارطة الطريق</span>
           </h2>
           <p className="text-[var(--text-base)] md:text-[var(--text-xl)] text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
@@ -22,7 +22,7 @@ const ProjectRoadmap = () => {
           {/* Current Scope */}
           <div className="premium-card !p-8 md:!p-12 relative overflow-hidden group flex flex-col items-start lg:items-end">
             <div className="absolute top-0 right-0 w-1 md:w-1.5 h-full bg-slate-700/50"></div>
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-8 md:mb-10 flex items-center gap-3">
+            <h3 className="text-xl font-bold text-white mb-8 md:mb-10 flex items-center gap-3">
               <span className="p-2 bg-slate-800 rounded-lg text-lg">🔬</span>
               النطاق الحالي (Prototype)
             </h3>
@@ -45,7 +45,7 @@ const ProjectRoadmap = () => {
           {/* Future Growth */}
           <div className="premium-card !p-8 md:!p-12 relative overflow-hidden group border-sky-500/20 flex flex-col items-start lg:items-end">
             <div className="absolute top-0 right-0 w-1 md:w-1.5 h-full bg-sky-500"></div>
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-8 md:mb-10 flex items-center gap-3">
+            <h3 className="text-xl font-bold text-white mb-8 md:mb-10 flex items-center gap-3">
               <span className="p-2 bg-sky-500/10 rounded-lg text-lg">🚀</span>
               التطوير المستقبلي (Backend)
             </h3>
